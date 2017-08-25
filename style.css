@@ -1,0 +1,118 @@
+html {
+    font-family: Verdana, sans-serif;
+}
+
+body {
+    background-color: #19365b;
+    color: aliceblue;
+}
+
+#header {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    /*background-color: darkblue;*/
+    /*max-width: 50em;*/
+    padding: .5em;
+    margin-top: 1em;
+}
+
+h1 {
+    font-weight: 200;
+    font-size: 1.5em;
+}
+
+.apiContainer {
+    margin-left: auto;
+    margin-right: auto;
+    /*background-color: #033270;*/
+    /*max-width: 95%;*/
+    padding: 1em;
+    margin-top: 1em;
+}
+
+button {
+    color: white;
+    border: none;
+    padding: 1em 3em;
+    font-size: 1em;
+    margin-left: 10%;
+    margin-right: 10%;
+    outline: none;
+}
+
+.endOfList {
+    opacity: .5;
+}
+
+.hover {
+    opacity: .5;
+}
+
+.buttonHolder {
+    margin-bottom: .5em;
+    text-align: center;
+}
+
+button, .chartHolder {
+    background-color: #14253d;
+}
+
+.chartHolder {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding-top: 5px;
+    
+}
+
+.apiWrapper {
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 500px;
+    width: 49%;
+    overflow: hidden;
+    text-align: center;
+    display: inline-block;
+}
+
+.apiMap {
+    max-width: 100%;
+    transform: scale(2);
+    height: auto;
+}
+
+#swellMap {
+    
+}
+
+#windMap {
+    
+}
+
+#periodMap {
+    
+}
+
+#time {
+    text-align: center;
+    /*background-color: #03092b;*/
+    padding: .5em 0em;
+    margin-top: .25em;
+    margin-left: .25em;
+}
+
+canvas {
+    display: block;
+}
+
+.barContainer {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #033270;
+    padding: 1em;
+    margin-top: 1em;
+    position: relative;
+    height: 400px;
+    width: 400px;
+}

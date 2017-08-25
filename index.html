@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Massachusetts Surf checker</title>
+    <meta name="trying out things" descprition="testing out making a website">
+    <link rel="stylesheet" href="style.css">
+    
+  </head>
+  <body>
+      <div id="header">
+        <h1>Massachusetts, Rhode Island, and New Hampshire Surf</h1>
+      </div>
+      <div class="apiContainer">
+          
+        <p id="time">Time :</p>
+
+        <div class="buttonHolder">
+          <button id="left" class="endOfList" onclick="leftShift(responseLongBeach)">- 3hrs</button>
+          
+          <button id="right" onclick="rightShift(responseLongBeach)">+ 3hrs</button>
+        </div>
+          
+        <div class="chartHolder">  
+          <div class="apiWrapper">
+            <img id="swellMap" class="apiMap">
+          </div>
+          
+          <div class="apiWrapper">
+            <img id="windMap" class="apiMap">
+          </div>
+          
+          <div class="apiWrapper">
+            <img id="periodMap" class="apiMap">
+          </div>
+          <div class="apiWrapper">
+            <img id="pressureMap" class="apiMap">
+          </div>
+        </div>  
+          <a href="http://magicseaweed.com"><img src="https://im-1-uk.msw.ms/msw_powered_by.png"></a>
+      </div>
+      
+      <div class="barContainer">
+        <canvas id="myChart" width="100" height="100"></canvas>
+      </div>
+      
+      <!--- not workint jQuery UI stuff <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>--->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script src="Chart.js" type="text/javascript"></script>
+      <script src="helper.js" type="text/javascript"></script>
+  </body>
+</html>
