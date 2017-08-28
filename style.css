@@ -63,7 +63,7 @@ button, .chartHolder {
     margin-right: auto;
     text-align: center;
     padding-top: 5px;
-    
+    padding-bottom: 5px;
 }
 
 .apiWrapper {
@@ -109,10 +109,41 @@ canvas {
 .barContainer {
     margin-left: auto;
     margin-right: auto;
-    background-color: #033270;
     padding: 1em;
     margin-top: 1em;
+    /*position: relative;*/
+    max-height: 550px;
+
+}
+
+.barContainer h1 {
+    
+}
+
+.barWrapper {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #14253d;
     position: relative;
-    height: 400px;
-    width: 400px;
+    max-height: 500px;
+    width: 100%;
+}
+
+.scaleHolder {
+    /*position: relative;
+    display: none;*/
+}
+
+.image {
+    width: 33%;
+    min-width: 200px; 
+    display: none;
+    z-index: 99;
+       
+}
+
+a {
+    display: block;
+    width: 100%;
+    text-align: right;
 }
