@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Massachusetts Surf checker</title>
+    <title>New England Surf Forecast</title>
     <meta name="trying out things" descprition="testing out making a website">
+    <!---<meta name="viewport" content="width=device-width, initial-scale=2">--->
     <link rel="stylesheet" href="style.css">
-    
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   </head>
   <body>
       <div id="header">
@@ -15,17 +16,18 @@
         <p id="time">Time :</p>
 
         <div class="buttonHolder">
+          <button id="leftDay" class="endOfList" onclick="leftShiftDay(responseLongBeach)">- day</button>
           <button id="left" class="endOfList" onclick="leftShift(responseLongBeach)">- 3hrs</button>
           
           <button id="right" onclick="rightShift(responseLongBeach)">+ 3hrs</button>
+          <button id="rightDay" onclick="rightShiftDay(responseLongBeach)">+ day</button>
         </div>
           
         <div class="chartHolder">  
+            
           <div class="apiWrapper">
             <img id="swellMap" class="apiMap">
-            <div class="scaleHolder swell">
-                <img class="image swell" src="images/swell_height.png">
-            </div>
+            <img class="image swell" src="images/swell_height.png">
           </div>
           
           <div class="apiWrapper">
@@ -37,12 +39,14 @@
             <img id="periodMap" class="apiMap">
             <img class="image period" src="images/swell_period.png">
           </div>
+            
           <div class="apiWrapper">
             <img id="pressureMap" class="apiMap">
             <img  class="image pressure" src="images/pressure.png">
           </div>
         </div>  
           <a href="http://magicseaweed.com"><img src="https://im-1-uk.msw.ms/msw_powered_by.png"></a>
+          
       </div>
       
       <div class="barContainer">
@@ -65,6 +69,14 @@
         <h1>Cape Cod:</h1>
         <div class="barWrapper">
             <canvas id="capeCod"  width="1000" height="400"></canvas>
+        </div>
+        <a href="http://magicseaweed.com"><img src="https://im-1-uk.msw.ms/msw_powered_by.png"></a>
+      </div>
+      
+      <div class="barContainer">
+        <h1>Nantasket:</h1>
+        <div class="barWrapper">
+            <canvas id="nantasket"  width="1000" height="400"></canvas>
         </div>
         <a href="http://magicseaweed.com"><img src="https://im-1-uk.msw.ms/msw_powered_by.png"></a>
       </div>
@@ -123,6 +135,33 @@
             <canvas id="ruggles"  width="1000" height="400"></canvas>
         </div>
         <a href="http://magicseaweed.com"><img src="https://im-1-uk.msw.ms/msw_powered_by.png"></a>
+      </div>
+      
+      <div class="barContainer">
+        <h1>Color Scale:</h1>
+        <div class="barWrapper">
+            
+            <div class="colorScale">
+                <div class="colorBox" style="background-color: rgba(142, 15, 15, 0.3);"></div>
+                = stay out</div> 
+            <div class="colorScale">
+                <div class="colorBox" style="background-color: rgb(122, 36, 36);"></div>
+                = risky</div> 
+            <div class="colorScale">
+                <div class="colorBox" style="background-color: rgb(85, 150, 92);"></div>
+                = probably fine</div> 
+            <div class="colorScale">
+                <div class="colorBox" style="background-color: rgb(6, 186, 0);"></div>
+                = paddle out</div> 
+            <div class="colorScale">
+                <div class="colorBox" style="background-color: rgb(224, 142, 11);"></div>
+                = basically perfect</div> 
+            <div class="colorScale">
+                <div class="colorBox" style="background-color: rgb(242, 216, 19);"></div>
+                = perfect</div>
+            
+        </div>
+        
       </div>
       
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

@@ -4,7 +4,7 @@ var responseLongBeach = [];
 var dateTime = new Date();
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=368&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=368&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -43,6 +43,7 @@ $.ajax({
         responseLongBeach[7]["solidRating"] = 2;*/
         // server response
         barMaker(responseLongBeach); // set up bar graph
+        windSpeedFinder(responseLongBeach);
     }
 });
 
@@ -54,6 +55,32 @@ function setUpCharts(response) {
         document.getElementById("periodMap").src = response[chartIndex]["charts"]["period"];
         document.getElementById("pressureMap").src = response[chartIndex]["charts"]["pressure"];
         displayTime(response, chartIndex);
+}
+
+function rightShiftDay(response) {
+    if (chartIndex < 32) {
+        chartIndex= chartIndex + 8;
+        document.getElementById("swellMap").src = response[chartIndex]["charts"]["swell"];
+        document.getElementById("windMap").src = response[chartIndex]["charts"]["wind"];
+        document.getElementById("periodMap").src = response[chartIndex]["charts"]["period"];
+        document.getElementById("pressureMap").src = response[chartIndex]["charts"]["pressure"];
+        displayTime(response, chartIndex);
+        if (document.getElementById("left").classList.contains("endOfList")) {
+            document.getElementById("left").classList.remove("endOfList");
+        }
+        if (document.getElementById("leftDay").classList.contains("endOfList")) {
+            document.getElementById("leftDay").classList.remove("endOfList");
+        }
+        if (chartIndex === 39) {
+            document.getElementById("right").classList.add("endOfList");
+            document.getElementById("rightDay").classList.add("endOfList");
+        }
+        if (chartIndex >= 32) {
+            document.getElementById("rightDay").classList.add("endOfList");
+        }
+        //console.log(chartIndex);
+        return chartIndex;
+    }
 }
 
 function rightShift(response) { // so the charts can scroll to the right
@@ -70,6 +97,13 @@ function rightShift(response) { // so the charts can scroll to the right
         if (chartIndex === 39) {
             document.getElementById("right").classList.add("endOfList");
         }
+        if (chartIndex >= 32) {
+            document.getElementById("rightDay").classList.add("endOfList");
+        }
+        if (chartIndex > 7){
+            document.getElementById("leftDay").classList.remove("endOfList");
+        }
+        //console.log(chartIndex);
         return chartIndex;
     }
 }
@@ -85,37 +119,119 @@ function leftShift(response) { // so the chart can scroll to the left
         if (document.getElementById("right").classList.contains("endOfList")) {
             document.getElementById("right").classList.remove("endOfList");
         }
+        
+        if (chartIndex < 32) {
+            document.getElementById("rightDay").classList.remove("endOfList");
+        }
+        
         if (chartIndex === 0) {
             document.getElementById("left").classList.add("endOfList");
         }
+        if (chartIndex <= 7){
+            document.getElementById("leftDay").classList.add("endOfList");
+        }
+        //console.log(chartIndex);
+        return chartIndex;
+    }
+}
+
+function leftShiftDay(response) { // so the chart can scroll to the left
+    if (chartIndex > 7) {
+        chartIndex= chartIndex - 8;
+        document.getElementById("swellMap").src = response[chartIndex]["charts"]["swell"];
+        document.getElementById("windMap").src = response[chartIndex]["charts"]["wind"];
+        document.getElementById("periodMap").src = response[chartIndex]["charts"]["period"];
+        document.getElementById("pressureMap").src = response[chartIndex]["charts"]["pressure"];
+        displayTime(response, chartIndex);
+        if (document.getElementById("right").classList.contains("endOfList")) {
+            document.getElementById("right").classList.remove("endOfList");
+        }
+        
+        if (chartIndex < 32) {
+            document.getElementById("rightDay").classList.remove("endOfList");
+        }
+        
+        if (chartIndex === 0) {
+            document.getElementById("left").classList.add("endOfList");
+        }
+        if (chartIndex <= 7){
+            document.getElementById("leftDay").classList.add("endOfList");
+        }
+        //console.log(chartIndex);
         return chartIndex;
     }
 }
 
 function convertTime(unix) {
-     dateTime.setTime(unix * 1000);
+    dateTime.setTime(unix * 1000);
     var miltHours = dateTime.getHours();
     var hours = "";
+    var dayOfWeek = "";
+    switch (dateTime.getDay()) {
+    case 0:
+        dayOfWeek = "Sun";
+        break;
+    case 1:
+        dayOfWeek = "Mon";
+        break;
+    case 2:
+        dayOfWeek = "Tues";
+        break;
+    case 3:
+        dayOfWeek = "Wed";
+        break;
+    case 4:
+        dayOfWeek = "Thurs";
+        break;
+    case 5:
+        dayOfWeek = "Fri";
+        break;
+    case 6:
+        dayOfWeek = "Sat";
+}
     if (miltHours > 12) {
         hours = String(miltHours - 12) + ":00 PM";
     }
     if (miltHours <= 12) {
         hours = String(miltHours) + ":00 AM";
     }
-    return String(dateTime.getMonth() + 1) + "/" + dateTime.getDate() + "/" + dateTime.getFullYear() + " " + hours;
+    return dayOfWeek + " " + String(dateTime.getMonth() + 1) + "/" + dateTime.getDate() + " " + hours;
 }
 
 function displayTime(response, number) { // to update the time from the charts & convert from unix
     dateTime.setTime(response[number]["timestamp"] * 1000);
     var miltHours = dateTime.getHours();
     var hours = "";
+    var dayOfWeek = "";
+    switch (dateTime.getDay()) {
+    case 0:
+        dayOfWeek = "Sunday";
+        break;
+    case 1:
+        dayOfWeek = "Monday";
+        break;
+    case 2:
+        dayOfWeek = "Tuesday";
+        break;
+    case 3:
+        dayOfWeek = "Wednesday";
+        break;
+    case 4:
+        dayOfWeek = "Thursday";
+        break;
+    case 5:
+        dayOfWeek = "Friday";
+        break;
+    case 6:
+        dayOfWeek = "Saturday";
+}
     if (miltHours > 12) {
         hours = String(miltHours - 12) + ":00 PM";
     }
     if (miltHours <= 12) {
         hours = String(miltHours) + ":00 AM";
     }
-    document.getElementById("time").innerHTML = "Time:  " + hours + "  " + String(dateTime.getMonth() + 1) + "/" + dateTime.getDate() + "/" + dateTime.getFullYear();
+    document.getElementById("time").innerHTML = "Time:  " + dayOfWeek + "  " + String(dateTime.getMonth() + 1) + "/" + dateTime.getDate() + "/" + dateTime.getFullYear() + "  " + hours;
 }
 
 function roundTo(n, digits) {
@@ -129,7 +245,6 @@ function roundTo(n, digits) {
      return +(test.toFixed(digits));
    }
 
-
 //bar graph area:
 
 //to do: separate data creation and graph set up... pass data though as parameters
@@ -142,6 +257,22 @@ function dataFinder(response) { // get the data in array for chart.js from JSON 
     }
     return data;
     
+}
+
+function windSpeedFinder(response) {
+    var windData = [];
+    for(var i = 0; i < 40; i++) {
+        windData.push(response[i]["wind"]["speed"]);
+    }
+    return windData;
+}
+
+function windDirectionFinder(response) {
+    var windDirectionData = [];
+    for(var i = 0; i < 40; i++) {
+        windDirectionData.push(response[i]["wind"]["compassDirection"]);
+    }
+    return windDirectionData;
 }
 
 function labelFinder(response) { // get the time and date labels in array for chart.js from JSON
@@ -204,6 +335,8 @@ function barMaker(response) {
     var labelsResponse = [];
     var ratingsResponse = [];
     var colorResponse = [];
+    var windSpeedResponse = [];
+    var windDirectionResponse = [];
     var id = response[40]["id"]; //id of the information coming in so I can easily resuse this funct
     var name = response[41]["name"]; // just in case I need it
     
@@ -212,7 +345,8 @@ function barMaker(response) {
     dataResponse = dataFinder(response);
     labelsResponse = labelFinder(response);
     colorResponse = colorFinder(response);
-    
+    windSpeedResponse = windSpeedFinder(response);
+    windDirectionResponse = windDirectionFinder(response);
     //console.log(colorResponse);
     console.log(id + " " + name); // to figure out where the problems are coming from
 
@@ -230,13 +364,27 @@ function barMaker(response) {
           borderWidth: 1},]
       },
       options: {
+        tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    return '= Avg Wave Height ' + tooltipItem.yLabel;
+                },
+                afterLabel: function(tooltipItem, data) {
+                    return '   Wind speed: ' + windDirectionResponse[tooltipItem.index] + " " + windSpeedResponse[tooltipItem.index] + ' MPH';
+                },
+
+                title: function(tooltipItem, data) {
+                    return tooltipItem[0].xLabel;
+                }
+            }
+        },
         responsive: true,
         maintainAspectRatio: true,
         scales: {
           yAxes: [{
             stacked: true,
             ticks: { 
-              beginAtZero:true
+              beginAtZero: true
             }
           }],
           xAxes: [{

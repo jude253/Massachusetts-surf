@@ -8,9 +8,10 @@ var responseNarragansett = [];
 var responseRuggles = [];
 var responseTheWall = [];
 var responseKennebunk = [];
+var responseNantasket = [];
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=377&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=377&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -43,7 +44,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=1091&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=1091&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -76,7 +77,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=373&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=373&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -109,7 +110,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=846&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=846&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -142,7 +143,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=368&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=368&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -175,7 +176,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=1103&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=1103&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -208,7 +209,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=374&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=374&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -241,40 +242,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=374&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
- 
-    // The name of the callback parameter, as specified by the YQL service
-    jsonp: "callback",
- 
-    // Tell jQuery we're expecting JSONP
-    dataType: "jsonp",
- 
-    // Tell YQL what we want and that we want JSON/ wtf does this even mean
-    data: {
-        q: "charts and data to Ruggles Ri",
-        format: "json"
-    },
- 
-    // Work with the response
-    success: function( response ) {
-        //console.log( response );  // this is just in case
-        
-        
-
-        
-        for(var i = 0; i < response.length; i ++) { // store the response in this file
-            //console.log(response[i])
-            responseRuggles.push(response[i]);
-        }
-        
-        responseRuggles.push({id: "ruggles"},{name: "Ruggles"})
-        // server response
-        barMaker(responseRuggles); // set up bar graph
-    }
-});
-
-$.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=369&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=369&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -307,7 +275,7 @@ $.ajax({
 });
 
 $.ajax({
-    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=364&fields=charts.*,timestamp,fadedRating,solidRating,swell.*",
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=364&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
  
     // The name of the callback parameter, as specified by the YQL service
     jsonp: "callback",
@@ -336,5 +304,38 @@ $.ajax({
         responseKennebunk.push({id: "kennebunk"},{name: "Kennebunk"})
         // server response
         barMaker(responseKennebunk); // set up bar graph
+    }
+});
+
+$.ajax({
+    url: "http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=371&fields=charts.*,timestamp,fadedRating,solidRating,swell.*,wind.*",
+ 
+    // The name of the callback parameter, as specified by the YQL service
+    jsonp: "callback",
+ 
+    // Tell jQuery we're expecting JSONP
+    dataType: "jsonp",
+ 
+    // Tell YQL what we want and that we want JSON/ wtf does this even mean
+    data: {
+        q: "charts and data to Nantasket Ma",
+        format: "json"
+    },
+ 
+    // Work with the response
+    success: function( response ) {
+        //console.log( response );  // this is just in case
+        
+        
+
+        
+        for(var i = 0; i < response.length; i ++) { // store the response in this file
+            //console.log(response[i])
+            responseNantasket.push(response[i]);
+        }
+        
+        responseNantasket.push({id: "nantasket"},{name: "Nantasket"})
+        // server response
+        barMaker(responseNantasket); // set up bar graph
     }
 });
