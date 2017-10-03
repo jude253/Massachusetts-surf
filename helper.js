@@ -307,7 +307,7 @@ function colorFinder(response) {
         //console.log(ratings[i]);
         switch (ratings[i]) {
             case 0:
-                colorRatings.push("rgba(142, 15, 15, 0.3)");
+                colorRatings.push("rgb(91, 8, 13)");
                 break;
             case 1:
                 colorRatings.push("rgb(122, 36, 36)");
@@ -358,19 +358,28 @@ function barMaker(response) {
         labels: labelsResponse,
         
         datasets: [{
-          label: '= Avg Wave Height',
+          label: 'Avg Wave Height',
           data: dataResponse,
           backgroundColor: colorResponse,
           borderWidth: 1},]
       },
       options: {
+        title:{
+            display: true,
+            text: 'Average Wave Heights',
+            fontStyle: 'normal'
+        },
+        legend:{
+            display: false
+        },
         tooltips: {
+            displayColors: false,
             callbacks: {
                 label: function(tooltipItem, data) {
-                    return '= Avg Wave Height ' + tooltipItem.yLabel;
+                    return 'Avg Wave Height: ' + tooltipItem.yLabel + " ft, " + response[tooltipItem.index]['swell']['components']['combined']['compassDirection'];
                 },
                 afterLabel: function(tooltipItem, data) {
-                    return '   Wind speed: ' + windDirectionResponse[tooltipItem.index] + " " + windSpeedResponse[tooltipItem.index] + ' MPH';
+                    return 'Avg Wind Speed: ' + windSpeedResponse[tooltipItem.index] + ' mph, ' + windDirectionResponse[tooltipItem.index];
                 },
 
                 title: function(tooltipItem, data) {

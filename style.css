@@ -143,6 +143,7 @@ canvas {
 }
 
 .barWrapper {
+    /*padding-top: 2em;*/
     margin-left: auto;
     margin-right: auto;
     background-color: #14253d;
@@ -150,6 +151,10 @@ canvas {
     max-height: 500px;
     width: 100%;
     text-align: center;
+}
+
+#legend {
+    padding-top: 0;
 }
 
 .scaleHolder {
@@ -165,7 +170,7 @@ canvas {
        
 }
 
-a {
+.linkHolder {
     display: block;
     width: 100%;
     text-align: right;
