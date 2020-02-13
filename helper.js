@@ -192,11 +192,19 @@ function convertTime(unix) {
     if (miltHours > 12) {
         hours = String(miltHours - 12) + ":00 PM";
     }
-    if (miltHours <= 12) {
+    if (miltHours < 12) {
+        hours = String(miltHours) + ":00 AM";
+    }
+    if (miltHours === 12) {
+        hours = String(miltHours) + ":00 PM";
+    }
+    if (miltHours === 24) {
         hours = String(miltHours) + ":00 AM";
     }
     return dayOfWeek + " " + String(dateTime.getMonth() + 1) + "/" + dateTime.getDate() + " " + hours;
 }
+
+
 
 function displayTime(response, number) { // to update the time from the charts & convert from unix
     dateTime.setTime(response[number]["timestamp"] * 1000);
