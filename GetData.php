@@ -1,0 +1,109 @@
+<?php
+function getSpotIds() {
+    $host = "localhost";
+    $dbusername = "root";
+    $dbpassword = "gfjl6v9q";
+    $dbname = "surf";
+    
+    $spotIdArray;
+    // Create connection
+    $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);    
+    if(mysqli_connect_error()){
+            die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
+    }
+    else{
+        $sql = "SELECT spot_id FROM spotnames";
+        if ($conn->query($sql)){
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0){ // output data of each row
+                while($row = $result->fetch_assoc()) {
+                    #echo ($row['spot_id']); # for future debugging purposes
+                    $spotIdArray[] = $row['spot_id'];
+                }
+            } else {
+                echo "0 results";
+            }
+                
+        }
+        else{
+            echo "Error:".$sql."<br>".$conn->error;
+        }
+    $conn->close();
+    }
+    
+    return $spotIdArray;
+}
+
+function getBackGroundColor($solidRating,$fadedRating){
+    $input = $solidRating-$fadedRating;
+    switch ($input) {
+        case 0:
+            return "rgb(91, 8, 13)";
+        case 1:
+            return "rgb(122, 36, 36)";
+        case 2:
+            return "rgb(85, 150, 92)";
+        case 3:
+            return "rgb(6, 186, 0)";
+        case 4:
+            return "rgb(224, 142, 11)";
+        case 5:
+            return "rgb(242, 216, 19)";
+        default:
+            return "rgb(91, 8, 13)";
+    }
+    
+}
+
+function getPageData($spotIds) {
+    $host = "localhost";
+    $dbusername = "root";
+    $dbpassword = "gfjl6v9q";
+    $dbname = "surf";
+    
+    $pageData;
+    // Create connection
+    $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);    
+    if(mysqli_connect_error()){
+            die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
+    }
+    else{
+        foreach ($spotIds as $spot_id){
+            $sql = "SELECT orderid, DATE_FORMAT(times,'%a %m/%d %I:00%p') AS times, minBreakHeight, maxBreakHeight, height, period, swellCompDir, solidRating, fadedRating, windSpeed, windCompDir, spotname, state FROM reqdata join spotnames on reqdata.spot_id = spotnames.spot_id where reqdata.spot_id = $spot_id";
+            
+            
+            if ($conn->query($sql)){
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0){ // output data of each row
+                    while($row = $result->fetch_assoc()) {
+                        # put data in JSON format
+                        $rowNum = $row['orderid'];
+                        $pageData[$spot_id]['tableData']['times'][$rowNum] = $row['times'];
+                        $pageData[$spot_id]['tableData']['avgHeight'][$rowNum] = round(($row['maxBreakHeight']+ $row['minBreakHeight'])/2,1);
+                        $pageData[$spot_id]['tableData']['height'][$rowNum] = $row['height'];
+                        $pageData[$spot_id]['tableData']['period'][$rowNum] = $row['period'];
+                        $pageData[$spot_id]['tableData']['swellCompDir'][$rowNum] = $row['swellCompDir'];
+                        $pageData[$spot_id]['tableData']['color'][$rowNum] = getBackGroundColor($row['solidRating'],$row['fadedRating']);
+                        $pageData[$spot_id]['tableData']['windSpeed'][$rowNum] = $row['windSpeed'];
+                        $pageData[$spot_id]['tableData']['windCompDir'][$rowNum] = $row['windCompDir'];
+                        if($rowNum == 0 ){
+                            $pageData[$spot_id]['spotname'] = $row['spotname'];
+                            $pageData[$spot_id]['state'] = $row['state'];
+                            }
+                        
+                    }
+                }else {
+                    echo "0 results";
+                }
+                
+            }else{
+                echo "Error:".$sql."<br>".$conn->error;
+            }
+        
+        }
+    $conn->close();
+    }
+    #var_dump($pageData[377]['tableData']['height']);
+    return $pageData;
+}
+?>
