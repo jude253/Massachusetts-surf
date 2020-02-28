@@ -1,17 +1,12 @@
 # Massachusetts-surf
-This website is going to display all the information I need to figure out where &amp; when to surf (around Massachusetts).  Additionally I will eventually add sub-pages with more information about each spot, such as a gps map, some graphic annimations, and tide charts.
+This website is going to display all the information I need to figure out where &amp; when to surf (around Massachusetts) without clicking
 
-INFO ON HOW WEBAPP WORKS:
+I need some help formatting some bar graphs with chart.js.  I am not familiar with how it works I would like to make the graphs-- done
 
-This webapp has a MySql backend that is updated 2x per day with a cron job.  The updateDB.php file and updateImages.php scripts are run to update the MySQL database.  They get their data from the MSW API, parse it, and reformate it for my MySQL database.
+resizable and have better demensions.-- done
 
-When pages are loaded for the client in the webbrowser, the data is taken from the MySQL database. GetData.php does this. Images are stored in the image folder, not in the mySQL database to not slow down the database. GetData.php also does this.
+Also I want to split up the "helper.js" file into smaller files so that each file only has one purpose like user interaction or surf charts or bar graphs.-- partially done
 
-The FrontEnd.js file contains the UI mechanics for the buttons and formating the barGraphs etc.  The data for the barGraphs in the page is taken frmo the mySQL database using getData.php
+I'm going to add in swell direction
 
-The folder structure in Git is very similar to that on my actual server so that I can use git for version control.
-
-
-PLANS FOR FUTURE:
-
-Now that I have a stable backend, I believe it will be much easier to add additionaly functionality from separate API's and maintain organization.  Next I would like to create subpages for each spot, and add some simple additional functionlity to it.
+Potentially add in tides if I can find a nice place for them.
