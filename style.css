@@ -1,3 +1,5 @@
+/*eventually I want to go through here and make this a more of a framework of css*/
+
 html {
     font-family: Verdana, sans-serif;
 }
@@ -7,158 +9,85 @@ body {
     color: aliceblue;
 }
 
-#header {
+/*everything is in pageBounds i.e. middle 80%ish of window.  I think this looks nice*/
+
+#pageBounds {
+    margin: auto; 
+    width: 80%; 
+    max-width: 1000px;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    /*background-color: darkblue;*/
-    /*max-width: 50em;*/
-    padding: .5em;
-    margin-top: 1em;
-    background-color: #14253d;
-    max-width: 725px;
 }
 
-h1 {
-    font-weight: 200;
-    font-size: 1.5em;
+/*header css*/
+#header {
+    margin: 2em 0;
 }
 
-.apiContainer {
-    margin-left: auto;
-    margin-right: auto;
-    /*background-color: #033270;*/
-    /*max-width: 95%;*/
-    padding: 1em;
-    margin-top: 1em;
-    max-width: 1200px;
+/*button css*/
+.buttonHolder {
+    display: flex;
+    box-sizing: border-box;
+    padding: .5em 0;
 }
 
-@media only screen and (max-width: 820px) {
-    button {
-        padding: 1em 2em;
-    }
+.buttonRow {
+    display: inline-flex;
+    width: 50%;
+    box-sizing: border-box;
 }
 
 button {
-    color: white;
+    background-color: #14253d;
+    color: aliceblue;
     border: none;
-    padding: 1em 3em;
+    width: 8em;
+    height: 3em;
     font-size: 1em;
-    margin-left: 5%;
-    margin-right: 5%;
-    outline: none;
-}
-
-#left {
-    margin-left: 1%;
-}
-
-#leftDay {
-    margin-right: 1%;
-}
-
-#right {
-    margin-right: 1%;
-}
-
-#rightDay {
-    margin-left: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+    box-sizing: border-box;
 }
 
 .endOfList {
     opacity: .5;
 }
 
-.hover {
-    opacity: .5;
+/*map css*/
+#mapWindow {
+    background-color: #14253d; 
+    padding: 2%;
 }
 
-.buttonHolder {
-    margin-bottom: .5em;
-    text-align: center;
+.mapRow {
+    margin: auto; 
+    display: flex;
 }
 
-button, .chartHolder {
-    background-color: #14253d;
-}
-
-.chartHolder {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.apiWrapper {
-    margin-left: auto;
-    margin-right: auto;
-    max-height: 500px;
-    width: 49%;
-    overflow: hidden;
-    text-align: center;
+.mapContainer {
     display: inline-block;
-}
-
-.apiMap {
-    max-width: 100%;
-    transform: scale(2);
-    height: auto;
-}
-
-#swellMap {
-    
-}
-
-#windMap {
-    
-}
-
-#periodMap {
-    
-}
-
-#timeWrapper {
-    text-align: center;
-    padding: 1em 0;
-    margin-top: .25em;
-    margin-left: .25em;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 400px;
-}
-
-#time {
-    padding: 1em 0;
-    text-align: center;
-    margin: .1em;
-    background-color: #09192f;
-    
-    
-}
-
-canvas {
-    display: block;
-}
-
-.barContainer {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 1em;
-    margin-top: 1em;
-    /*position: relative;*/
-    max-height: 550px;
-    max-width: 1200px;
+    width: 50%;
+    padding: .5%;
+    box-sizing: border-box;
 
 }
 
-.barContainer h1 {
-    
+/*for making sure elements' padding and margins work well together*/
+.outline {
+    box-sizing: border-box;
+    border-width: thin;
+    border-style: solid;
+    border-color: aliceblue;
+
 }
 
+.map {
+
+}
+
+/*legend css*/
 .barWrapper {
-    /*padding-top: 2em;*/
+
     margin-left: auto;
     margin-right: auto;
     background-color: #14253d;
@@ -172,24 +101,6 @@ canvas {
     padding-top: 0;
 }
 
-.scaleHolder {
-    /*position: relative;
-    display: none;*/
-}
-
-.image {
-    width: 33%;
-    min-width: 200px; 
-    display: none;
-    z-index: 99;
-       
-}
-
-.linkHolder {
-    display: block;
-    width: 100%;
-    text-align: right;
-}
 
 .colorScale {
     display: inline-block;
@@ -201,4 +112,12 @@ canvas {
     height: 1em;
     width: 3em;
     background: black;
+}
+
+
+/*magic seaweed logo div css*/
+.linkHolder {
+    display: block;
+    width: 100%;
+    text-align: right;
 }
