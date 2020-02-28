@@ -1,7 +1,8 @@
 'use strict';
+//this file does the ui mechanics for the index.php page
 var chartIndex = 0;
 
-function createSettingsJSON(pageData,spotid) {
+function createSettingsJSON(pageData,spotid) { //this function creates the settings json that detetmines how the barcharts will be set up
                 return {
                   type: 'bar',
                   data: {
@@ -10,13 +11,13 @@ function createSettingsJSON(pageData,spotid) {
                     datasets: [{
                         label: 'Avg Wave Height',
                         data: pageData[spotid]['tableData']['avgHeight'],
-                        backgroundColor: pageData[spotid]['tableData']['color'],
+                        backgroundColor: pageData[spotid]['tableData']['color'], // barchart background color
                         borderWidth: 1},]
                   },
                   options: {
                       title:{
                         display: true,
-                        text: 'Average Wave Heights',
+                        text: 'Average Wave Heights', //title
                         fontStyle: 'normal'
                     },
                     legend:{
@@ -24,7 +25,7 @@ function createSettingsJSON(pageData,spotid) {
                     },
                     tooltips: {
                         displayColors: false,
-                        callbacks: {
+                        callbacks: { // floating labels on each bar chart elemnts
                             label: function(tooltipItem, data) {
                                 return 'Swell Height: ' + pageData[spotid]['tableData']['height'][tooltipItem.index] + " ft at " + pageData[spotid]['tableData']['period'][tooltipItem.index] + "s, " + pageData[spotid]['tableData']['swellCompDir'][tooltipItem.index];
                             },
@@ -47,7 +48,7 @@ function createSettingsJSON(pageData,spotid) {
                         }
                       }],
                       xAxes: [{
-                        ticks: {
+                        ticks: { //this makes it so the date labels are more or less midnight every night
                             maxTicksLimit: 5,
                             autoSkip: true
                         },
@@ -57,7 +58,7 @@ function createSettingsJSON(pageData,spotid) {
                 };
             }
 
-function rightShiftDay(pageData) {
+function rightShiftDay(pageData) { //updates chartIndex for a day shift forward/to the right then calls the update functions for the rest of the elements that need to be updated by this function, ie, the charts, the time above the charts, the buttons that can be pressed.
     if (chartIndex < 32) {
         chartIndex= chartIndex + 8;
         updateCharts();
@@ -68,7 +69,7 @@ function rightShiftDay(pageData) {
     }
 }
 
-function rightShift(pageData) { // so the charts can scroll to the right
+function rightShift(pageData) { //updates chartIndex for a three hour shift forward/to the right then calls the update functions for the rest of the elements that need to be updated by this function, ie, the charts, the time above the charts, the buttons that can be pressed.
     if (chartIndex !== 39) {
         chartIndex++;
         updateCharts();
@@ -79,7 +80,7 @@ function rightShift(pageData) { // so the charts can scroll to the right
     }
 }
 
-function leftShift(pageData) { // so the chart can scroll to the left
+function leftShift(pageData) { //updates chartIndex for a three hour shift backwards/to the left then calls the update functions for the rest of the elements that need to be updated by this function, ie, the charts, the time above the charts, the buttons that can be pressed.
     if (chartIndex !== 0) {
         chartIndex--;
         updateCharts();
@@ -90,7 +91,7 @@ function leftShift(pageData) { // so the chart can scroll to the left
     }
 }
 
-function leftShiftDay(pageData) { // so the chart can scroll to the left
+function leftShiftDay(pageData) { //updates chartIndex for a day shift backwards/to the left then calls the update functions for the rest of the elements that need to be updated by this function, ie, the charts, the time above the charts, the buttons that can be pressed.
     if (chartIndex > 7) {
         chartIndex= chartIndex - 8;
         updateCharts();
@@ -101,18 +102,18 @@ function leftShiftDay(pageData) { // so the chart can scroll to the left
     }
 }
 
-function displayTime(pageData) { // to update the time from the charts & convert from unix
+function displayTime(pageData) { // updates the time from the pageData JSON which is created in getData.php and initialized in index.php
     document.getElementById("time").innerHTML = "Time:  " + pageData['377']['tableData']['times'][chartIndex];
 }
 
-function updateCharts() {
+function updateCharts() { //updates the <img> tag with the new chart that is stored in the images/file
     document.getElementById("swellMap").src = "images/mapImages/swell/"+ chartIndex + ".gif";
     document.getElementById("windMap").src = "images/mapImages/wind/"+ chartIndex + ".gif";
     document.getElementById("periodMap").src = "images/mapImages/period/"+ chartIndex + ".gif";
     document.getElementById("pressureMap").src = "images/mapImages/pressure/"+ chartIndex + ".gif";
 }
 
-function updateButtons() {
+function updateButtons() { //makes sure that the appropriate button is turned "unclickable" when that button reached it's scrolling limit
     if (chartIndex === 0) {
             document.getElementById("left").classList.add("endOfList");
     } else{

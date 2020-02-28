@@ -1,5 +1,5 @@
 <?php
-//run this in cron at midnight!
+//this runs 2x per day with a cron job to update the maps stored in the file directory of this webapp.
 function callAPI($method, $url, $data){ //found this code on the internet somewhere
    $curl = curl_init();
    switch ($method){

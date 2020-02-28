@@ -1,14 +1,29 @@
+/*eventually I want to go through here and make this a more of a framework of css*/
+
+html {
+    font-family: Verdana, sans-serif;
+}
+
 body {
     background-color: #19365b;
     color: aliceblue;
 }
 
+/*everything is in pageBounds i.e. middle 80%ish of window.  I think this looks nice*/
+
 #pageBounds {
     margin: auto; 
     width: 80%; 
     max-width: 1000px;
+    text-align: center;
 }
 
+/*header css*/
+#header {
+    margin: 2em 0;
+}
+
+/*button css*/
 .buttonHolder {
     display: flex;
     box-sizing: border-box;
@@ -30,19 +45,15 @@ button {
     font-size: 1em;
     margin-left: auto;
     margin-right: auto;
-
     display: inline-block;
     box-sizing: border-box;
-}
-
-.hover {
-    opacity: .5;
 }
 
 .endOfList {
     opacity: .5;
 }
 
+/*map css*/
 #mapWindow {
     background-color: #14253d; 
     padding: 2%;
@@ -58,14 +69,55 @@ button {
     width: 50%;
     padding: .5%;
     box-sizing: border-box;
-/*
+
+}
+
+/*for making sure elements' padding and margins work well together*/
+.outline {
+    box-sizing: border-box;
     border-width: thin;
     border-style: solid;
     border-color: aliceblue;
-*/
+
 }
 
 .map {
 
 }
 
+/*legend css*/
+.barWrapper {
+
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #14253d;
+    position: relative;
+    max-height: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+#legend {
+    padding-top: 0;
+}
+
+
+.colorScale {
+    display: inline-block;
+    padding: 1em .5em;
+}
+
+.colorBox {
+    display: inline-block;
+    height: 1em;
+    width: 3em;
+    background: black;
+}
+
+
+/*magic seaweed logo div css*/
+.linkHolder {
+    display: block;
+    width: 100%;
+    text-align: right;
+}

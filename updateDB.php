@@ -1,5 +1,6 @@
 <?php 
-function callAPI($method, $url, $data){
+//this runs 2x per day with a cron job to update mySQL database created for this webapp.
+function callAPI($method, $url, $data){ //found this on the internet
    $curl = curl_init();
    switch ($method){
       case "POST":
@@ -31,15 +32,16 @@ function callAPI($method, $url, $data){
    return $result;
 }
 
-function insertReplaceDB_spot($responsearray, $spot_id) {
-    $host = "localhost";
-    $dbusername = "root";
-    $dbpassword = "gfjl6v9q";
-    $dbname = "surf";
-    $table = "reqdata";
-    $spot_id = $spot_id;  #this needs to be set somewhere better
+function insertReplaceDB_spot($responsearray, $spot_id) { //inserts or replaces all (0-39) rows of data for given spot_id (response is API resonse from Magic Sea Weed)
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
+    $table = $credentials["dbtable"];
+    $spot_id = $spot_id;  
     
-    // Create connection
+    // Create connection to mySQL database
     $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);
         
     if(mysqli_connect_error()){
@@ -106,7 +108,7 @@ function insertReplaceDB_spot($responsearray, $spot_id) {
             
             
             if ($conn->query($sql)){
-                #echo "New record $orderid is inserted sucessfully <br>";
+                echo "New record $orderid is inserted sucessfully <br>";
             }
             else{
                 echo "Error:".$sql."<br>".$conn->error;
@@ -118,13 +120,14 @@ function insertReplaceDB_spot($responsearray, $spot_id) {
     
 }
 
-function insertIntoDB($responsearray, $spot_id) {
-    $host = "localhost";
-    $dbusername = "root";
-    $dbpassword = "gfjl6v9q";
-    $dbname = "surf";
-    $table = "reqdata";
-    $spot_id = $spot_id;  #this needs to be set somewhere better
+function insertIntoDB($responsearray, $spot_id) { //inserts all (0-39) rows of data for given spot_id (response is API resonse from Magic Sea Weed) Doesn't replace exisiting. This was used at first to set up database, but now deprecated.
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
+    $table = $credentials["dbtable"];
+    $spot_id = $spot_id;  
     
     // Create connection
     $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);
@@ -159,6 +162,9 @@ function insertIntoDB($responsearray, $spot_id) {
             $windUnit = $responsearray[$orderid]->wind->unit;
             
             
+             
+            #This query will instert the 40 rows from spot_id into req data, so each spot will only have 40 rows.
+            
             $sql = "INSERT INTO $table
             
             (spot_id,orderid,times,solidRating,fadedRating,
@@ -173,7 +179,7 @@ function insertIntoDB($responsearray, $spot_id) {
             
             
             if ($conn->query($sql)){
-                echo "New record $orderid is inserted sucessfully <br>";
+                #echo "New record $orderid is inserted sucessfully <br>";
             }
             else{
                 echo "Error:".$sql."<br>".$conn->error;
@@ -185,11 +191,12 @@ function insertIntoDB($responsearray, $spot_id) {
     
 }
 
-function getSpotIds() {
-    $host = "localhost";
-    $dbusername = "root";
-    $dbpassword = "gfjl6v9q";
-    $dbname = "surf";
+function getSpotIds() { //this funtion goes through the table spotnames and returns the spot_id for all the rows in the table, ie spots.
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
     
     $spotIdArray;
     // Create connection
@@ -220,8 +227,13 @@ function getSpotIds() {
     return $spotIdArray;
 }
 
-function updateDB() { #gets all spot_id's in table spotnames then for each spot calls the api and updates the table reqdata in mysql.
-    $spotIds = getSpotIds();
+function getCredentials($filename) { //gets database login and table info from another file so it is all edited in one spot
+    $iniFile = parse_ini_file($filename,true);
+    return $iniFile["dbInfo"];
+}
+
+function updateDB() { //gets all spot_id's in table spotnames then for each spot_id calls the api and updates the table reqdata in mysql.
+    $spotIds = getSpotIds(); 
     for ($index = 0; $index < count($spotIds); $index++){
         $spot_id = $spotIds[$index];
         $response = callAPI('GET',"http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=$spot_id&fields=timestamp,solidRating,fadedRating,swell.absMinBreakingHeight,swell.absMaxBreakingHeight,swell.unit,swell.components.combined.*,wind.*",false);

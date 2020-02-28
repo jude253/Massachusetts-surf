@@ -1,9 +1,12 @@
 <?php
-function getSpotIds() {
-    $host = "localhost";
-    $dbusername = "root";
-    $dbpassword = "gfjl6v9q";
-    $dbname = "surf";
+//This file loads data from the MySQL DB into the current page
+
+function getSpotIds() { //this function goes the table spotnames and returns an array of spot_id's
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
     
     $spotIdArray;
     // Create connection
@@ -12,7 +15,7 @@ function getSpotIds() {
             die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
     }
     else{
-        $sql = "SELECT spot_id FROM spotnames";
+        $sql = "SELECT spot_id FROM spotnames ORDER BY state, spotname";
         if ($conn->query($sql)){
             $result = $conn->query($sql);
             if ($result->num_rows > 0){ // output data of each row
@@ -34,7 +37,7 @@ function getSpotIds() {
     return $spotIdArray;
 }
 
-function getBackGroundColor($solidRating,$fadedRating){
+function getBackGroundColor($solidRating,$fadedRating){ //turns the MSW ratings into colors for the bar chart
     $input = $solidRating-$fadedRating;
     switch ($input) {
         case 0:
@@ -55,26 +58,32 @@ function getBackGroundColor($solidRating,$fadedRating){
     
 }
 
-function getPageData($spotIds) {
-    $host = "localhost";
-    $dbusername = "root";
-    $dbpassword = "gfjl6v9q";
-    $dbname = "surf";
+function getCredentials($filename) { //gets database login and table info from another file so it is all edited in one spot
+    $iniFile = parse_ini_file($filename,true);
+    return $iniFile["dbInfo"];
+}
+
+function getPageData($spotIds) { //this function gets the data for each spot_id in the array of spot_id's and then gets the row data from the mySql quert and adds it to the JSON of pageData that this function returns.  The data for each spot is stored under pageData[$Spot_id]
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
     
     $pageData;
     // Create connection
     $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);    
-    if(mysqli_connect_error()){
+    if(mysqli_connect_error()){ //if there is an error print it
             die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
     }
-    else{
+    else{ //if there is no error run this query for each spot_id
         foreach ($spotIds as $spot_id){
             $sql = "SELECT orderid, DATE_FORMAT(times,'%a %m/%d %I:00%p') AS times, minBreakHeight, maxBreakHeight, height, period, swellCompDir, solidRating, fadedRating, windSpeed, windCompDir, spotname, state FROM reqdata join spotnames on reqdata.spot_id = spotnames.spot_id where reqdata.spot_id = $spot_id";
             
             
             if ($conn->query($sql)){
                 $result = $conn->query($sql);
-                if ($result->num_rows > 0){ // output data of each row
+                if ($result->num_rows > 0){ // output data of each row AND create the pageData JSON
                     while($row = $result->fetch_assoc()) {
                         # put data in JSON format
                         $rowNum = $row['orderid'];
@@ -83,7 +92,7 @@ function getPageData($spotIds) {
                         $pageData[$spot_id]['tableData']['height'][$rowNum] = $row['height'];
                         $pageData[$spot_id]['tableData']['period'][$rowNum] = $row['period'];
                         $pageData[$spot_id]['tableData']['swellCompDir'][$rowNum] = $row['swellCompDir'];
-                        $pageData[$spot_id]['tableData']['color'][$rowNum] = getBackGroundColor($row['solidRating'],$row['fadedRating']);
+                        $pageData[$spot_id]['tableData']['color'][$rowNum] = getBackGroundColor($row['solidRating'],$row['fadedRating']); //background color is created
                         $pageData[$spot_id]['tableData']['windSpeed'][$rowNum] = $row['windSpeed'];
                         $pageData[$spot_id]['tableData']['windCompDir'][$rowNum] = $row['windCompDir'];
                         if($rowNum == 0 ){
@@ -103,7 +112,7 @@ function getPageData($spotIds) {
         }
     $conn->close();
     }
-    #var_dump($pageData[377]['tableData']['height']);
+    #var_dump($pageData[377]['tableData']['height']); // for debugging purposes
     return $pageData;
 }
 ?>
