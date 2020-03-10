@@ -58,6 +58,61 @@ function createSettingsJSON(pageData,spotid) { //this function creates the setti
                 };
             }
 
+function getTide24hrChartSettings(tide24hrData){
+    return{
+                      type: 'line',
+                      data: {
+                        labels: tide24hrData['orderid'],
+
+                        datasets: [{
+                            label: 'Tide Height',
+                            data: tide24hrData['tideHeight'],
+                            backgroundColor: '#000000',
+                            pointRadius: 0,
+                            borderWidth: 1},]
+                      },
+                      options: {
+                          title:{
+                            display: false,
+                            text: 'Tide Height by hour',
+                            fontStyle: 'normal'
+                        },
+                        legend:{
+                            display: false
+                        },
+                        tooltips: {
+                            intersect: false,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(tooltipItem, data) {
+                                    return null;
+                                },
+                                title: function(tooltipItem, data) {
+                                    return tooltipItem[0].yLabel + ' ft at ' + tide24hrData['hour'][tooltipItem[0].xLabel];
+                                }
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                          yAxes: [{
+                              gridLines: {
+                                  display: false
+                              },
+                              ticks: {
+                                  beginAtZero: true
+                              }
+                          }],
+                          xAxes: [{
+                              gridLines: {
+                                  display: false
+                              }
+                          }]
+                        }
+                      }
+                    };
+}
+
 function rightShiftDay(pageData) { //updates chartIndex for a day shift forward/to the right then calls the update functions for the rest of the elements that need to be updated by this function, ie, the charts, the time above the charts, the buttons that can be pressed.
     if (chartIndex < 32) {
         chartIndex= chartIndex + 8;

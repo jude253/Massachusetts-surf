@@ -23,6 +23,15 @@ body {
     margin: 2em 0;
 }
 
+a {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+}
+
 /*button css*/
 .buttonHolder {
     display: flex;
@@ -85,6 +94,15 @@ button {
 
 }
 
+/*css for the spot name of the bar graph*/
+.spotNameBarGraph {
+    background-color: #14253d;
+    max-width: 30%;
+    padding: 20px 0 20px 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
 /*legend css*/
 .barWrapper {
 
@@ -120,4 +138,69 @@ button {
     display: block;
     width: 100%;
     text-align: right;
+}
+
+/*subPage css framework-- more modular*/
+.leftAligned {
+    text-align: left;
+}
+
+.textCentered {
+    text-align: center;
+}
+.noMargins{
+    margin: 0;
+}
+
+/*pay attention to mobile sizes too tideshilo loads weird on mobile*/
+
+.tableCenteredDiv{
+    width: 90%;
+    min-width: 135px;
+}
+.centerHorizontally {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.columnParent {
+    margin: auto; 
+    display: flex;
+}
+
+.verticalSpacing {
+    margin-top: 2.5%;
+    margin-bottom: 2.5%;
+}
+
+.column {
+    display: inline-block;
+    width: 45%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.mainBackgroundColor {
+    background-color: #19365b;
+}
+
+.secondBackgroundColor {
+    background-color: #14253d;
+}
+
+.subDiv {
+    display: inline-block;
+    margin: 0 auto;
+    box-sizing: border-box;
+    width: 20%;
+    min-width: 135px;
+    vertical-align: top;
+}
+
+.fontSmaller{
+    font-size: 70%;
+}
+
+.smallPadding {
+    padding: 1%;
 }

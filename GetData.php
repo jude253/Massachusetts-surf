@@ -115,4 +115,126 @@ function getPageData($spotIds) { //this function gets the data for each spot_id 
     #var_dump($pageData[377]['tableData']['height']); // for debugging purposes
     return $pageData;
 }
+
+function getTides24hr($state) { //this funtion goes through the table states and returns the state and stationid for all the rows.
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
+    
+    $tides24hr;
+    // Create connection
+    $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);    
+    if(mysqli_connect_error()){
+            die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
+    }
+    else{
+        $sql = "SELECT orderid,tideHeight,TIME_FORMAT(times,'%h:%i%p') as 'hour' FROM tide24hr WHERE state = '$state'";
+        if ($conn->query($sql)){
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0){ // output data of each row
+                while($row = $result->fetch_assoc()) {
+                    #echo ($row['spot_id']); # for future debugging purposes
+                    $tides24hr['tideHeight'][$row['orderid']] = $row['tideHeight'];
+                    $tides24hr['hour'][$row['orderid']] = $row['hour'];
+                    $tides24hr['orderid'][$row['orderid']] = $row['orderid'];
+                }
+            } else {
+                echo "0 results";
+            }
+                
+        }
+        else{
+            echo "Error:".$sql."<br>".$conn->error;
+        }
+    $conn->close();
+    }
+    
+    return $tides24hr;
+}
+
+function getTidesHilo($state) { //this funtion goes through the table states and returns the state and stationid for all the rows.
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
+    
+    $tidesHilo = array();
+    // Create connection
+    $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);    
+    if(mysqli_connect_error()){
+            die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
+    }
+    else{
+        $sql = "SELECT orderid,tideHeight,type, DATE_FORMAT(times,'%c/%e') as 'date', DATE_FORMAT(times,'%e') as 'day', TIME_FORMAT(times,'%h:%i%p') as 'hour' FROM tidehilo WHERE state = '$state' ORDER BY orderid";
+        if ($conn->query($sql)){
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0){ // output data of each row
+                $divCount = 0;
+                $prevDay = 0;
+                $subCount = 0;
+                while($row = $result->fetch_assoc()) {
+                    if($row['orderid'] == 0) { //first time through loop: 
+                        $prevDay = $row['day']; //set up prevDay for future loop iterations 
+                        $tidesHilo[$divCount]['date'] = $row['date']; //set date key, value in new div subarray
+                    }
+                    if($prevDay != $row['day']){ //if the day of the currrent row $row['day'] is new, and 
+                        $divCount = $divCount +1; // increment $divCount to make a new div subarray
+                        $subCount = 0; //reset subCount for new div subarray
+                        $prevDay = $row['day']; // update prevDay for future iterations
+                        $tidesHilo[$divCount]['date'] = $row['date']; //set date key, value in new div subarray
+                    }
+                    
+                    //set the $subCount-th 'hour' key, value in the $divCount-th subarray: 
+                    $tidesHilo[$divCount]['data'][$subCount]['hour'] = $row['hour']; 
+                    
+                    //set the $subCount-th 'tideHeight' key, value in the $divCount-th subarray: 
+                    $tidesHilo[$divCount]['data'][$subCount]['tideHeight'] = $row['tideHeight'];
+                    
+                    //set the $subCount-th 'type' key, value in the $divCount-th subarray: 
+                    
+                    if($row['type'] == 'H'){
+                        $tidesHilo[$divCount]['data'][$subCount]['type'] = 'High';
+                    }
+                    if($row['type'] == 'L'){
+                        $tidesHilo[$divCount]['data'][$subCount]['type'] = 'Low';
+                    }
+//                    echo($row['orderid']); // for debugging purposes
+                    
+                    $subCount = $subCount + 1; // increment $subCount for the next iteration
+                }
+            } else {
+                echo "0 results";
+            }
+                
+        }
+        else{
+            echo "Error:".$sql."<br>".$conn->error;
+        }
+    $conn->close();
+    }
+    
+    return $tidesHilo;
+}
+
+//print_r(getTides24hr("ri"));
+
+//HTML below is for readability of JSON array in debugging:
 ?>
+<!--
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <pre>
+        <?php
+            print_r(getTidesHilo("ri"));
+        ?>
+    </pre>
+    
+</body>
+</html>-->

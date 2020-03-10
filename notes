@@ -1,0 +1,171 @@
+TODO:
+
+-update css for index.php a tag, or find better way to make clickable button
+-finalize css for spotDetails.php
+-add wind directions for next 24 hours?? maybe
+-add satilite map of GPS spot
+
+
+#updateDB.php because server timezone is 2 hours behind east coast, use: CONVERT_TZ(times,'+00:00','+02:00')
+
+#I am sure that the time_zone on updateTides.php will need some considerstions when being sent from my server.  The server is 2hrs behind east coast.
+
+#possibly better way to do the MSW API call
+
+$dataMSW = array(
+    'spot_id' => '377',
+    'fields' => 'timestamp,solidRating,fadedRating,swell.absMinBreakingHeight,swell.absMaxBreakingHeight,swell.unit,swell.components.combined.*,wind.*'
+    
+);
+
+$response = callAPI('GET',"http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/",$dataMSW);
+var_dump($response);
+
+#simpified http req for initial stages:
+
+http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=377&fields=timestamp,swell.components.combined.*
+
+http://magicseaweed.com/api/ad8f2245ae1d67e90d037af0dea211ff/forecast/?spot_id=377&fields=timestamp,wind.*,swell.components.combined.*
+
+
+This html makes reading $JSONARRAY easy
+<!--
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <pre>
+        <?php
+            print_r($JSONARRAY);
+        ?>
+    </pre>
+    
+</body>
+</html>-->
+
+
+#database table setup
+
+CREATE TABLE reqdata (
+spot_id int(4) NOT NULL,
+orderid int(2) NOT NULL,
+times TIMESTAMP NOT NULL,
+solidRating INT(1),
+fadedRating INT(1),
+
+minBreakHeight DECIMAL(5,2),
+maxBreakHeight DECIMAL(5,2),
+height DECIMAL(5,1),
+period INT(2), 
+swellDir DECIMAL(5,2),
+swellCompDir VARCHAR(3),
+swellUnit VARCHAR(3),
+
+windSpeed INT(2),
+windDir DECIMAL(5,2),
+windCompDir VARCHAR(3),
+windGusts INT(2),
+windUnit VARCHAR(3),
+PRIMARY KEY(spot_id,orderid)
+);
+
+
+
+$spot_id
+$order_id
+$times
+$solidRating
+$fadedRating
+        
+$absMinBreakingHeight #2decimals
+$absMaxBreakingHeight
+$height
+$period
+$swellDir #6 spots
+$swellCompDir
+$swellUnit
+
+
+$windSpeed
+$windDir #6 spots
+$windCompDir
+$windGusts
+$windUnit
+
+
+
+
+DROP TABLE reqdata
+
+CREATE TABLE spotnames (
+spotname VARCHAR(25) NOT NULL,
+state VARCHAR(2) NOT NULL,
+spot_id INT(4) NOT NULL,
+PRIMARY KEY(spot_id)
+);
+
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Matunuck","RI",377);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("The Wall","NH",369);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Nahant Beach","MA",1091);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Cape Cod","MA",373);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Second Beach","RI",846);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Rye Rocks","NH",368);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Narragansett Town Beach","RI",1103);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Ruggles","RI",374);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Kennebunk Beach","ME",364);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Nantasket Beach","MA",371);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Cape Ann","MA",370);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Devereux","MA",4792);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Winthrop Jetty","MA",5862);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Point Judith","RI",376);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("K38/39","RI",785);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("East Beach","RI",4059);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Bailey's Beach","RI",2096);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("South Shore Beach","RI",2967);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Short Sands Beach","ME",366);
+INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Ogunquit River Mouth","ME",365);
+
+#insert practice rows as example:
+
+INSERT INTO `reqdata` (spot_id,orderid,times,height,period,swellCompDir) VALUES (
+377,1,FROM_UNIXTIME(1581746400),1.6,9,"S");
+INSERT INTO `reqdata` (spot_id,orderid,times,height,period,swellCompDir) VALUES (
+377,2,FROM_UNIXTIME(1581757200),1.4,8,"S");
+
+
+#tide24hr table creation:
+
+CREATE TABLE tide24hr (
+stationid VARCHAR(7) NOT NULL,
+state VARCHAR(2) NOT NULL,
+orderid INT(2) NOT NULL,
+times datetime NOT NULL,
+tideHeight FLOAT NOT NULL,
+PRIMARY KEY(state,orderid)
+);
+
+#states table creation:
+
+CREATE TABLE states (
+state VARCHAR(2) NOT NULL,
+stationid VARCHAR(7) NOT NULL,
+stationcity VARCHAR(20) NOT NULL,
+PRIMARY KEY(state)
+);
+
+INSERT INTO `states` (state,stationid,stationcity) VALUES ("MA","8443970","Boston");
+INSERT INTO `states` (state,stationid,stationcity) VALUES ("NH","8423898","Fort Point");
+INSERT INTO `states` (state,stationid,stationcity) VALUES ("RI","8452660","Newport");
+INSERT INTO `states` (state,stationid,stationcity) VALUES ("ME","8419317","Wells");
+
+CREATE TABLE tidehilo (
+stationid VARCHAR(7) NOT NULL,
+state VARCHAR(2) NOT NULL,
+orderid INT(2) NOT NULL,
+times datetime NOT NULL,
+tideHeight FLOAT NOT NULL,
+type VARCHAR(1) NOT NULL,
+PRIMARY KEY(state,orderid)
+);

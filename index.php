@@ -71,8 +71,8 @@ $pageData = getPageData($spotIds);
         <?php
         foreach($spotIds as $spot_id){
             echo("<div >
-                    <div style='background-color: #14253d; max-width: 30%; padding: 5px 0 5px 15px; margin-top: 20px;  margin-bottom: 10px;'>
-                        <p >".$pageData[$spot_id]['spotname'].", ".$pageData[$spot_id]['state']."</p>
+                    <div class='spotNameBarGraph'>
+                        <a href='http://localhost/test/spotDetails.php?spot_id=$spot_id'>".$pageData[$spot_id]['spotname'].", ".$pageData[$spot_id]['state']."</a>
                     </div>
                     
                     <canvas id='$spot_id' width='1000' height='400' style='background-color: #14253d;'></canvas>
