@@ -11,7 +11,13 @@ The FrontEnd.js file contains the UI mechanics for the buttons and formating the
 
 The folder structure in Git is very similar to that on my actual server so that I can use git for version control.
 
+MySQL INFORMATION:
+
+In case of database issues, the notes file contains mySQL code to reset the database tables.
+
 
 PLANS FOR FUTURE:
 
 Now that I have a stable backend, I believe it will be much easier to add additionaly functionality from separate API's and maintain organization.  Next I would like to create subpages for each spot, and add some simple additional functionlity to it.
+
+--accomplished this.  Now there is a subpage for each spot, with NOAA tide data. There's hourly tide heights for the current day, then high and low times and heights for the next 5 days.  Additionally I use the googleMaps API to display a satillite image of each spot, giving the user some understanding of how the break works.  Additionally I may add an underwater elevation/contour map eventually.
