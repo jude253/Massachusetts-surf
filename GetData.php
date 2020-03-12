@@ -63,6 +63,11 @@ function getCredentials($filename) { //gets database login and table info from a
     return $iniFile["dbInfo"];
 }
 
+function getMapKey($filename) { //gets database login and table info from another file so it is all edited in one spot
+    $iniFile = parse_ini_file($filename,true);
+    return $iniFile["googleMapsAPI"]["key"];
+}
+
 function getPageData($spotIds) { //this function gets the data for each spot_id in the array of spot_id's and then gets the row data from the mySql quert and adds it to the JSON of pageData that this function returns.  The data for each spot is stored under pageData[$Spot_id]
     $credentials = getCredentials("surf.ini");
     $host = $credentials["host"];
@@ -218,6 +223,44 @@ function getTidesHilo($state) { //this funtion goes through the table states and
     
     return $tidesHilo;
 }
+
+
+function getMapCoordinates($spot_id) { //this function returns the mapCoordinates for a given $spot_id
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
+    
+    $mapCoordinates;
+    // Create connection
+    $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);    
+    if(mysqli_connect_error()){
+            die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
+    }
+    else{
+        $sql = "SELECT mapCoordinates FROM spotnames WHERE spot_id = '$spot_id'";
+        if ($conn->query($sql)){
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0){ // output data of each row
+                while($row = $result->fetch_assoc()) {
+                    #echo ($row['spot_id']); # for future debugging purposes
+                    $mapCoordinates = $row['mapCoordinates'];
+                }
+            } else {
+                echo "0 results";
+            }
+                
+        }
+        else{
+            echo "Error:".$sql."<br>".$conn->error;
+        }
+    $conn->close();
+    }
+    
+    return $mapCoordinates;
+}
+
 
 //print_r(getTides24hr("ri"));
 

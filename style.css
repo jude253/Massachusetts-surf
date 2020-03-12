@@ -58,6 +58,10 @@ button {
     box-sizing: border-box;
 }
 
+button:hover {
+    opacity: .5;
+}
+
 .endOfList {
     opacity: .5;
 }

@@ -6,6 +6,32 @@ TODO:
 -add satilite map of GPS spot
 
 
+Google API key:
+AIzaSyCIdpiQpxRQxUcrkpUCyeWZ2jfBMJ0QdbM
+
+#spot coordinates for each spot:
+
+$spotCoordinates = '41.372396,-71.539416'; //matunuck
+$spotCoordinates = '42.616826,-70.630869'; //good harbor
+$spotCoordinates = '41.843131,-69.945596'; //cape cod
+$spotCoordinates = '42.490454,-70.855047'; //deveraux
+$spotCoordinates = '42.441327,-70.935211'; //nahant
+$spotCoordinates = '42.292464,-70.872258'; //nantasket
+$spotCoordinates = '42.369551,-70.965836'; //winthrop jetty
+$spotCoordinates = '43.346398,-70.481564'; //kennebunk
+$spotCoordinates = '43.246262,-70.589308'; //ogunquit river mouth
+$spotCoordinates = '43.176463,-70.606844'; //short sands
+$spotCoordinates = '42.968692,-70.769091'; //rye rocks
+$spotCoordinates = '42.934892,-70.795533'; //the wall
+$spotCoordinates = '41.455062,-71.312605'; //bailey's beach
+$spotCoordinates = '41.347127,-71.672999'; //east beach
+$spotCoordinates = '41.366011,-71.494922'; //k38/k39
+$spotCoordinates = '41.432783,-71.455673'; //narragansett town beach
+$spotCoordinates = '41.361483,-71.479651'; //point judith
+$spotCoordinates = '41.467742,-71.296603'; //ruggles
+$spotCoordinates = '41.488436,-71.266409'; //second beach
+$spotCoordinates = '41.493825,-71.135478'; //south beach
+
 #updateDB.php because server timezone is 2 hours behind east coast, use: CONVERT_TZ(times,'+00:00','+02:00')
 
 #I am sure that the time_zone on updateTides.php will need some considerstions when being sent from my server.  The server is 2hrs behind east coast.
@@ -99,6 +125,9 @@ $windUnit
 
 DROP TABLE reqdata
 
+
+#old spot names:
+
 CREATE TABLE spotnames (
 spotname VARCHAR(25) NOT NULL,
 state VARCHAR(2) NOT NULL,
@@ -126,6 +155,38 @@ INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Bailey's Beach","RI",2
 INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("South Shore Beach","RI",2967);
 INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Short Sands Beach","ME",366);
 INSERT INTO `spotnames` (spotname,state,spot_id) VALUES ("Ogunquit River Mouth","ME",365);
+
+
+#new spotnames:
+
+CREATE TABLE spotnames (
+spotname VARCHAR(25) NOT NULL,
+state VARCHAR(2) NOT NULL,
+spot_id INT(4) NOT NULL,
+mapCoordinates VARCHAR(30) NOT NULL,
+PRIMARY KEY(spot_id)
+);
+
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Matunuck","RI",377,'41.372396,-71.539416');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("The Wall","NH",369,'42.934892,-70.795533');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Nahant Beach","MA",1091,'42.441327,-70.935211');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Cape Cod","MA",373,'41.843131,-69.945596');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Second Beach","RI",846,'41.488436,-71.266409');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Rye Rocks","NH",368,'42.968692,-70.769091');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Narragansett Town Beach","RI",1103,'41.432783,-71.455673');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Ruggles","RI",374,'41.467742,-71.296603');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Kennebunk Beach","ME",364,'43.346398,-70.481564');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Nantasket Beach","MA",371,'42.292464,-70.872258');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Cape Ann","MA",370,'42.616826,-70.630869');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Devereux","MA",4792,'42.490454,-70.855047');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Winthrop Jetty","MA",5862,'42.369551,-70.965836');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Point Judith","RI",376,'41.361483,-71.479651');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("K38/39","RI",785,'41.366011,-71.494922');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("East Beach","RI",4059,'41.347127,-71.672999');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Bailey's Beach","RI",2096,'41.455062,-71.312605');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("South Shore Beach","RI",2967,'41.493825,-71.135478');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Short Sands Beach","ME",366,'43.176463,-70.606844');
+INSERT INTO `spotnames` (spotname,state,spot_id,mapCoordinates) VALUES ("Ogunquit River Mouth","ME",365,'43.246262,-70.589308');
 
 #insert practice rows as example:
 

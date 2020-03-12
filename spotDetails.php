@@ -16,6 +16,12 @@ if(isset($_GET["spot_id"])){
 
 $tide24hrData = getTides24hr($pageData[$spot_id]['state']);
 $tideHiloData = getTidesHilo($pageData[$spot_id]['state']);
+$mapKey = getMapKey('surf.ini');
+$spotCoordinates = getMapCoordinates($spot_id);
+
+
+
+
 ?>
 <html>
 <head>
@@ -41,7 +47,7 @@ $tideHiloData = getTidesHilo($pageData[$spot_id]['state']);
                     <h1 class='verticalSpacing'>".$pageData[$spot_id]['spotname'].", ".$pageData[$spot_id]['state']."</h1>
                 </div>
 
-                <canvas id='$spot_id' width='1000' height='400' style='background-color: #14253d;'></canvas>
+                <canvas id='$spot_id' width='1000' height='600' style='background-color: #14253d;'></canvas>
                 <script language='JavaScript'> 
                 var ctx = document.getElementById('$spot_id');
                 var myChart = new Chart(ctx, createSettingsJSON(pageData,'$spot_id'));
@@ -53,7 +59,7 @@ $tideHiloData = getTidesHilo($pageData[$spot_id]['state']);
         
         ?>
         <div>
-            <p>Tides For Today:</p>
+            <p class="leftAligned">Tides For Today:</p>
             <div class="tideInfo smallPadding secondBackgroundColor verticalSpacing leftAligned ">
                  <canvas id="tide24hr" width="1000" height="100" ></canvas>
                 <script language="JavaScript"> 
@@ -63,7 +69,7 @@ $tideHiloData = getTidesHilo($pageData[$spot_id]['state']);
                 </script>
             </div>
             
-            <p>High And Low Tides For The Next 5 Days:</p>
+            <p class="leftAligned">High And Low Tides For The Next 5 Days:</p>
             <div class="tideInfo smallPadding secondBackgroundColor verticalSpacing leftAligned ">
                 <?php 
 //                var_dump($tideHiloData);
@@ -93,14 +99,25 @@ $tideHiloData = getTidesHilo($pageData[$spot_id]['state']);
                 ?>
             </div>
         </div>
-<!--
+        <p class="leftAligned">Wave Map:</p>
+        <div class="tideInfo smallPadding secondBackgroundColor verticalSpacing">
+                <iframe class=""
+                  width="99%"
+                  height="700"
+                  frameborder="0" style="border:0"
+                  src="https://www.google.com/maps/embed/v1/view?key=<?php echo($mapKey);?>&center=<?php echo($spotCoordinates);?>&zoom=17&maptype=satellite" allowfullscreen>
+                </iframe>
+
+        </div>
         
+<!--
         <div class="columnParent outline verticalSpacing leftAligned">
             <div class="secondBackgroundColor smallPadding column outline">
                 <p>Wave Details</p>
             </div>
             <div class="secondBackgroundColor smallPadding column outline">
                 <p>Wave Map</p>
+                
             </div>
         </div>
 -->
