@@ -47,7 +47,7 @@ $spotCoordinates = getMapCoordinates($spot_id);
                     <h1 class='verticalSpacing'>".$pageData[$spot_id]['spotname'].", ".$pageData[$spot_id]['state']."</h1>
                 </div>
 
-                <canvas id='$spot_id' width='1000' height='600' style='background-color: #14253d;'></canvas>
+                <canvas id='$spot_id' width='1000' height='400' style='background-color: #14253d;'></canvas>
                 <script language='JavaScript'> 
                 var ctx = document.getElementById('$spot_id');
                 var myChart = new Chart(ctx, createSettingsJSON(pageData,'$spot_id'));

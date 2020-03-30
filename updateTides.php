@@ -120,10 +120,10 @@ function insertReplaceTideHilo($responsearray, $stationid, $state) { //inserts o
             orderid = '$orderid',
             times = '$times',
             tideHeight = '$tideHeight',
-            type = '$type'";
+            type = '$type';";
             
             if ($conn->query($sql)){
-                echo "New record $orderid is inserted sucessfully <br>";
+                echo "New hilo record $orderid is inserted sucessfully <br>";
             }
             else{
                 echo "Error:".$sql."<br>".$conn->error;
@@ -134,6 +134,38 @@ function insertReplaceTideHilo($responsearray, $stationid, $state) { //inserts o
     }
     
 }
+
+
+function deleteRowsTideHilo() { //deletes all rows in $table = tidehilo
+    $credentials = getCredentials("surf.ini");
+    $host = $credentials["host"];
+    $dbusername = $credentials["dbusername"];
+    $dbpassword = $credentials["dbpassword"];
+    $dbname = $credentials["dbname"];
+    $table = "tidehilo";
+    
+    // Create connection to mySQL database
+    $conn = new mysqli($host,$dbusername,$dbpassword,$dbname);
+        
+    if(mysqli_connect_error()){
+        die('Connect Error ('.mysqli_connect_errno().')'.mysqli_connect_error());
+    }
+    else{   
+            $sql = "DELETE FROM $table"; //delete 
+            
+            if ($conn->query($sql)){
+                echo "Successfully deleted $table <br>";
+            }
+            else{
+                echo "Error:".$sql."<br>".$conn->error;
+            }
+
+    
+        $conn->close();
+    }
+    
+}
+
 
 function getCredentials($filename) { //gets database login and table info from another file so it is all edited in one spot
     $iniFile = parse_ini_file($filename,true);
@@ -209,10 +241,11 @@ function updateTide24hr(){
 function updateTideHilo(){
     $stateStationMap = getStationIds(); //gets map from Mysql with State as key and stationid as value
 
+    deleteRowsTideHilo(); //because there are varying amounts of tides for the next 5 days, delete all rows previously in table to avoid extra datapoints
     foreach ($stateStationMap as $state => $stationid) {
         $datahilo = array(
             'begin_date' => date("Ymd"),
-            'end_date' => date("Ymd")+4,
+            'range' => '120',
             'station' => $stationid,
             'product' => 'predictions',
             'datum' => 'MLLW',
@@ -223,10 +256,12 @@ function updateTideHilo(){
             'format' => 'json'
 
         );
-
+        
         $response = json_decode(callAPI('GET',"https://tidesandcurrents.noaa.gov/api/datagetter", $datahilo),true);
-//        var_dump($response,true);
+        //leaving the var dump incase of errors
+        var_dump($response,true);
         insertReplaceTideHilo($response,$stationid,$state);
+        
 
     }
 }
