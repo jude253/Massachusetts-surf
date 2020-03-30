@@ -120,7 +120,7 @@ function insertReplaceTideHilo($responsearray, $stationid, $state) { //inserts o
             orderid = '$orderid',
             times = '$times',
             tideHeight = '$tideHeight',
-            type = '$type';";
+            type = '$type'";
             
             if ($conn->query($sql)){
                 echo "New hilo record $orderid is inserted sucessfully <br>";
