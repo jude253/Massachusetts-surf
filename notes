@@ -6,6 +6,8 @@ TODO:
 -add satilite map of GPS spot
 
 
+Google API key:
+AIzaSyCIdpiQpxRQxUcrkpUCyeWZ2jfBMJ0QdbM
 
 #spot coordinates for each spot:
 
@@ -228,3 +230,22 @@ tideHeight FLOAT NOT NULL,
 type VARCHAR(1) NOT NULL,
 PRIMARY KEY(state,orderid)
 );
+
+
+#READABLE JSON
+
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <pre>
+        <?php
+            print_r(getTides24hr("ri"));
+        ?>
+    </pre>
+    
+</body>
+</html>
+-->

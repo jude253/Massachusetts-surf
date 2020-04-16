@@ -68,6 +68,11 @@ function getMapKey($filename) { //gets database login and table info from anothe
     return $iniFile["googleMapsAPI"]["key"];
 }
 
+function getWindyKey($filename) { //gets database login and table info from another file so it is all edited in one spot
+    $iniFile = parse_ini_file($filename,true);
+    return $iniFile["windyAPI"]["key"];
+}
+
 function getPageData($spotIds) { //this function gets the data for each spot_id in the array of spot_id's and then gets the row data from the mySql quert and adds it to the JSON of pageData that this function returns.  The data for each spot is stored under pageData[$Spot_id]
     $credentials = getCredentials("surf.ini");
     $host = $credentials["host"];
@@ -224,7 +229,6 @@ function getTidesHilo($state) { //this funtion goes through the table states and
     return $tidesHilo;
 }
 
-
 function getMapCoordinates($spot_id) { //this function returns the mapCoordinates for a given $spot_id
     $credentials = getCredentials("surf.ini");
     $host = $credentials["host"];
@@ -261,23 +265,25 @@ function getMapCoordinates($spot_id) { //this function returns the mapCoordinate
     return $mapCoordinates;
 }
 
-
-//print_r(getTides24hr("ri"));
-
-//HTML below is for readability of JSON array in debugging:
-?>
-<!--
-
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-    <pre>
-        <?php
-            print_r(getTidesHilo("ri"));
-        ?>
-    </pre>
+function getWindyOptions($spotCoordinates) {
+    //need to parse the lattitude and longitude from one string to two different variables because I have them stored as one string in database
+    $latLon = explode(',',$spotCoordinates);
+    $lat = $latLon[0];
+    $lon = $latLon[1];
     
-</body>
-</html>-->
+    $options = array(
+        'key' => getWindyKey('surf.ini'),
+
+        'lat' => $lat,
+        'lon' => $lon,
+        'zoom' => 11
+    );
+    
+    return $options;
+}
+//print_r();
+
+?>
+
+
+
