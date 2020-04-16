@@ -20,4 +20,6 @@ PLANS FOR FUTURE:
 
 Now that I have a stable backend, I believe it will be much easier to add additionaly functionality from separate API's and maintain organization.  Next I would like to create subpages for each spot, and add some simple additional functionlity to it.
 
+Also I will look into cross-site cookie request issues and see how I can resolve this.
+
 --accomplished this.  Now there is a subpage for each spot, with NOAA tide data. There's hourly tide heights for the current day, then high and low times and heights for the next 5 days.  Additionally I use the googleMaps API to display a satillite image of each spot, giving the user some understanding of how the break works.  Additionally I may add an underwater elevation/contour map eventually.
