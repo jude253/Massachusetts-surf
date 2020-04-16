@@ -156,6 +156,12 @@ button:hover {
     margin: 0;
 }
 
+/* css for windy api*/
+#windy {
+            width: 100%;
+            height: 700px;
+        }
+
 /*pay attention to mobile sizes too tideshilo loads weird on mobile*/
 
 .tableCenteredDiv{

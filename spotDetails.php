@@ -18,7 +18,7 @@ $tide24hrData = getTides24hr($pageData[$spot_id]['state']);
 $tideHiloData = getTidesHilo($pageData[$spot_id]['state']);
 $mapKey = getMapKey('surf.ini');
 $spotCoordinates = getMapCoordinates($spot_id);
-
+$options = getWindyOptions($spotCoordinates)
 
 
 
@@ -31,8 +31,15 @@ $spotCoordinates = getMapCoordinates($spot_id);
         var pageData = <?php echo (json_encode($pageData));?>;
         var tide24hrData = <?php echo (json_encode($tide24hrData));?>;
         var tideHiloData = <?php echo (json_encode($tideHiloData));?>;
+        var options = <?php echo (json_encode($options));?>;
             console.log(tide24hrData);
     </script>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://api.windy.com/assets/map-forecast/libBoot.js"></script>
+    <style>
+        
+    </style>
+    
     <link rel="stylesheet" href="style.css">
     <title>Spot Details Page</title>
     <meta name="Spot Details Page" descprition="Surf Forecast for MA and nearby States">
@@ -99,28 +106,39 @@ $spotCoordinates = getMapCoordinates($spot_id);
                 ?>
             </div>
         </div>
-        <p class="leftAligned">Wave Map:</p>
+        <p class="leftAligned">Satillite Wave Map:</p>
         <div class="tideInfo smallPadding secondBackgroundColor verticalSpacing">
-                <iframe class=""
-                  width="99%"
-                  height="700"
-                  frameborder="0" style="border:0"
-                  src="https://www.google.com/maps/embed/v1/view?key=<?php echo($mapKey);?>&center=<?php echo($spotCoordinates);?>&zoom=17&maptype=satellite" allowfullscreen>
-                </iframe>
+            <iframe class=""
+              width="100%"
+              height="700"
+              frameborder="0" style="border:0"
+              src="https://www.google.com/maps/embed/v1/view?key=<?php echo($mapKey);?>&center=<?php echo($spotCoordinates);?>&zoom=17&maptype=satellite" allowfullscreen>
+            </iframe>
 
         </div>
+        <p class="leftAligned">Wind Map:</p>
         
-<!--
-        <div class="columnParent outline verticalSpacing leftAligned">
-            <div class="secondBackgroundColor smallPadding column outline">
-                <p>Wave Details</p>
-            </div>
-            <div class="secondBackgroundColor smallPadding column outline">
-                <p>Wave Map</p>
-                
-            </div>
+        <div class="tideInfo smallPadding secondBackgroundColor verticalSpacing">
+            <div id="windy"></div>
+            <script>
+                // This is directly from the windyAPI tutorial site.  I do not know what this does except load the map.
+                //I tried to put the spot name in the options JSON, but that causes an error, so I am leaving this js code here
+                //even though I would rather put it in another file.  It's here so I can use php to put the spot name on the map.
+                //Maybe I will put this in FrontEnd.js eventually, but for now it is simplier to leave it here.
+                windyInit(options, windyAPI => {
+
+                    const { map } = windyAPI;
+                    // .map is instance of Leaflet map
+
+                    L.popup()
+                        .setLatLng([options['lat'], options['lon']])
+                        .setContent("<?php echo($pageData[$spot_id]['spotname']);?>")
+                        .openOn(map);
+                });
+            
+            </script>
         </div>
--->
+
     </div>
     
 </body>
