@@ -1,6 +1,6 @@
 <?php
-
 //I am sure that the time_zone on this page will need some considerstions when being sent from my server.  The server is 2hrs behind east coast.
+
 function callAPI($method, $url, $data){ //found this on the internet
    $curl = curl_init();
    switch ($method){
@@ -18,6 +18,7 @@ function callAPI($method, $url, $data){ //found this on the internet
          if ($data)
             $url = sprintf("%s?%s", $url, http_build_query($data));
    }
+//    var_dump($url);
    // OPTIONS:
    curl_setopt($curl, CURLOPT_URL, $url);
    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
@@ -28,6 +29,9 @@ function callAPI($method, $url, $data){ //found this on the internet
    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
    // EXECUTE:
    $result = curl_exec($curl);
+    
+    //if needed to see raw response, use the following line:
+    #print_r(json_decode($result));
    if(!$result){die("Connection Failure");}
    curl_close($curl);
    return $result;
@@ -50,6 +54,7 @@ function insertReplaceTide24hr($responsearray, $stationid, $state) { //inserts o
     else{
         for ($orderid = 0; $orderid < 24; $orderid++){ //for each datapoint returned or each hour in a day
             $times = $responsearray["predictions"][$orderid]["t"];
+            echo($responsearray["predictions"][$orderid]["t"]);
             $tideHeight = round($responsearray["predictions"][$orderid]["v"],2);
             
             echo($tideHeight);
@@ -135,7 +140,6 @@ function insertReplaceTideHilo($responsearray, $stationid, $state) { //inserts o
     
 }
 
-
 function deleteRowsTideHilo() { //deletes all rows in $table = tidehilo
     $credentials = getCredentials("surf.ini");
     $host = $credentials["host"];
@@ -165,7 +169,6 @@ function deleteRowsTideHilo() { //deletes all rows in $table = tidehilo
     }
     
 }
-
 
 function getCredentials($filename) { //gets database login and table info from another file so it is all edited in one spot
     $iniFile = parse_ini_file($filename,true);
@@ -224,9 +227,13 @@ function updateTide24hr(){
             'application' => 'surfcheckmass',
             'format' => 'json'
         );
-    
-        $response = json_decode(callAPI('GET',"https://tidesandcurrents.noaa.gov/api/datagetter", $data24Hr),true);
-//        var_dump($response,true);
+        
+        //NOTE: had to change api endpoint url from https://tidesandcurrents.noaa.gov/api/datagetter to https://api.tidesandcurrents.noaa.gov/api/prod/datagetter
+        $response = json_decode(callAPI('GET',"https://api.tidesandcurrents.noaa.gov/api/prod/datagetter", $data24Hr),true);
+
+        //leaving the var dump below incase of future issues
+        #var_dump($response,true);
+        
         insertReplaceTide24hr($response,$stationid,$state);
 
     }
@@ -256,10 +263,14 @@ function updateTideHilo(){
             'format' => 'json'
 
         );
+
         
-        $response = json_decode(callAPI('GET',"https://tidesandcurrents.noaa.gov/api/datagetter", $datahilo),true);
-        //leaving the var dump incase of errors
-        var_dump($response,true);
+        //NOTE: had to change api endpoint url from https://tidesandcurrents.noaa.gov/api/datagetter to https://api.tidesandcurrents.noaa.gov/api/prod/datagetter
+        $response = json_decode(callAPI('GET',"https://api.tidesandcurrents.noaa.gov/api/prod/datagetter", $datahilo),true);
+        
+        //leaving the var dump below incase of future issues
+        #var_dump($response,true);
+        
         insertReplaceTideHilo($response,$stationid,$state);
         
 
@@ -269,6 +280,3 @@ function updateTideHilo(){
 
 updateTideHilo();
 updateTide24hr();
-
-
-?>
